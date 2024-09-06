@@ -23,3 +23,4 @@ if __name__ == '__main__':
 
     # Llamar a la función principal con los argumentos proporcionados
     main(args.politica_filename, args.verbose)
+

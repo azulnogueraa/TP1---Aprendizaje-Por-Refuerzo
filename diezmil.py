@@ -20,7 +20,7 @@ class JuegoDiezMil:
             msg: str = 'turno ' + str(turno) + ':'
 
             # Un turno siempre empieza tirando los 6 dados.
-            jugada: int = JUGADA_TIRAR
+            jugada: str = 'tirar'
             dados_a_tirar: list[int] = [1, 2, 3, 4, 5, 6]
             fin_de_turno: bool = False
 
@@ -39,12 +39,12 @@ class JuegoDiezMil:
                     # Bien, suma puntos. Preguntamos al jugador qué quiere hacer.
                     jugada, dados_a_tirar = self.jugador.jugar(puntaje_total, puntaje_turno, dados)
 
-                    if jugada == JUGADA_PLANTARSE:
+                    if jugada == 'plantarse':
                         msg += 'P'
                         fin_de_turno = True
                         puntaje_turno += puntaje_tirada
 
-                    elif jugada == JUGADA_TIRAR:
+                    elif jugada == 'tirar':
                         dados_a_separar = separar(dados, dados_a_tirar)
                         assert len(dados_a_separar) + len(dados_a_tirar) == len(dados)
                         puntaje_tirada, dados_no_usados = puntaje_y_no_usados(dados_a_separar)
@@ -62,15 +62,42 @@ class JuegoDiezMil:
 
 
 def main():
-    jugador = JugadorAleatorio('random')
-    juego = JuegoDiezMil(jugador)
-    (cantidad_turnos, puntaje_final) = juego.jugar(verbose=True)
-    print(jugador.nombre, cantidad_turnos, puntaje_final)
-
-    jugador = JugadorSiempreSePlanta('plantón')
-    juego = JuegoDiezMil(jugador)
-    (cantidad_turnos, puntaje_final) = juego.jugar(verbose=True)
-    print(jugador.nombre, cantidad_turnos, puntaje_final)
+    num_juegos = 1000
+    
+    # Jugador Aleatorio
+    jugador_aleatorio = JugadorAleatorio('random')
+    juego_aleatorio = JuegoDiezMil(jugador_aleatorio)
+    
+    total_turnos_aleatorio = 0
+    total_puntaje_aleatorio = 0
+    
+    for _ in range(num_juegos):
+        (cantidad_turnos, puntaje_final) = juego_aleatorio.jugar(verbose=False)
+        total_turnos_aleatorio += cantidad_turnos
+        total_puntaje_aleatorio += puntaje_final
+    
+    promedio_turnos_aleatorio = total_turnos_aleatorio / num_juegos
+    promedio_puntaje_aleatorio = total_puntaje_aleatorio / num_juegos
+    
+    print(f"{jugador_aleatorio.nombre} - Promedio de turnos: {promedio_turnos_aleatorio}, Promedio de puntaje: {promedio_puntaje_aleatorio}")
+    
+    # Jugador Siempre Se Planta
+    jugador_planton = JugadorSiempreSePlanta('plantón')
+    juego_planton = JuegoDiezMil(jugador_planton)
+    
+    total_turnos_planton = 0
+    total_puntaje_planton = 0
+    
+    for _ in range(num_juegos):
+        (cantidad_turnos, puntaje_final) = juego_planton.jugar(verbose=False)
+        total_turnos_planton += cantidad_turnos
+        total_puntaje_planton += puntaje_final
+    
+    promedio_turnos_planton = total_turnos_planton / num_juegos
+    promedio_puntaje_planton = total_puntaje_planton / num_juegos
+    
+    print(f"{jugador_planton.nombre} - Promedio de turnos: {promedio_turnos_planton}, Promedio de puntaje: {promedio_puntaje_planton}")
 
 if __name__ == '__main__':
     main()
+    

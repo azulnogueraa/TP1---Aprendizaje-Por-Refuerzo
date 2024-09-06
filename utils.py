@@ -6,8 +6,8 @@ JUGADA_PLANTARSE: int = 0
 JUGADA_TIRAR: int = 1
 
 JUGADAS_STR = {
-    JUGADA_PLANTARSE: "Plantarse",
-    JUGADA_TIRAR: "Tirar",
+    JUGADA_PLANTARSE: 'plantarse',
+    JUGADA_TIRAR: 'tirar',
 }
 
 def puntaje_y_no_usados(ds: list[int]) -> tuple[int, list[int]]:
